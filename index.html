@@ -130,6 +130,57 @@
             transform: translateY(-2px);
         }
 
+        /* Header Mobile Optimasi - PERBAIKAN UNTUK MOBILE */
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px 0;
+            }
+            
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: nowrap; /* Mencegah wrap */
+            }
+            
+            .logo img {
+                height: 35px; /* Lebih kecil di mobile */
+                width: auto;
+            }
+            
+            .nav-menu {
+                display: flex;
+                gap: 5px; /* Gap lebih kecil */
+                flex-wrap: nowrap; /* Mencegah wrap */
+                justify-content: flex-end;
+            }
+            
+            .nav-menu a {
+                padding: 6px 12px; /* Padding lebih kecil */
+                font-size: 13px; /* Font lebih kecil */
+                white-space: nowrap; /* Mencegah text wrap */
+                background: rgba(76, 175, 80, 0.15); /* Background transparan */
+                border-radius: 20px;
+            }
+            
+            .nav-menu a:hover {
+                background: var(--primary-light);
+            }
+        }
+
+        /* Untuk layar sangat kecil (di bawah 380px) */
+        @media (max-width: 380px) {
+            .logo img {
+                height: 30px;
+            }
+            
+            .nav-menu a {
+                padding: 5px 8px;
+                font-size: 12px;
+            }
+        }
+
         /* Hero Section */
         .hero-section {
             padding: 40px 0;
@@ -705,16 +756,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .nav-menu {
-                justify-content: center;
-                width: 100%;
-            }
-
-            .header-content {
-                justify-content: center;
-                text-align: center;
-            }
-
             .promo-details {
                 font-size: 13px;
             }
@@ -741,7 +782,7 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header - SUDAH DIPERBAIKI UNTUK MOBILE -->
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -799,7 +840,7 @@
         </div>
     </section>
 
-    <!-- PREDIKSI BANNER - NEW (sesuai permintaan: info prediksi bola togel slot) -->
+    <!-- PREDIKSI BANNER - NEW -->
     <div class="container" id="prediksi">
         <div class="prediction-banner">
             <div class="prediction-text">
