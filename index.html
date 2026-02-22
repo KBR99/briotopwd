@@ -7,6 +7,111 @@
     
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Langsung paste ini di website kamu -->
+<script>
+(function() {
+    // CSS untuk animasi
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Animasi Snowflakes */
+        @keyframes snowflakes-fall {
+            0% { top: -10%; transform: translateX(0) rotate(0deg); }
+            100% { top: 110%; transform: translateX(100px) rotate(360deg); }
+        }
+        
+        @keyframes snowflakes-shake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            50% { transform: translateX(80px) rotate(180deg); }
+        }
+        
+        .imlek-snowflake {
+            position: fixed;
+            top: -10%;
+            z-index: 9999;
+            user-select: none;
+            cursor: pointer;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+            pointer-events: auto;
+            animation-name: snowflakes-fall, snowflakes-shake;
+            animation-timing-function: linear, ease-in-out;
+            animation-iteration-count: infinite, infinite;
+            animation-play-state: running, running;
+        }
+        
+        .imlek-snowflake:hover {
+            opacity: 1;
+            filter: drop-shadow(0 0 10px gold);
+            transform: scale(1.2);
+            transition: all 0.3s ease;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Gambar-gambar Imlek
+    const images = [
+        { src: 'https://photoku.io/images/2026/02/19/ICON-5.png', alt: 'Kuda', sizes: [50, 45] },
+        { src: 'https://photoku.io/images/2026/02/19/ICON-6.png', alt: 'Ingot Emas', sizes: [40, 35] },
+        { src: 'https://photoku.io/images/2026/02/19/ICON-7.png', alt: 'Angpao', sizes: [40, 35] },
+        { src: 'https://photoku.io/images/2026/02/19/ICON-2.png', alt: 'Uang', sizes: [40, 35] },
+        { src: 'https://photoku.io/images/2026/02/19/ICON-3.png', alt: 'Jeruk', sizes: [50, 45] },
+        { src: 'https://photoku.io/images/2026/02/19/ICON-4.png', alt: 'Lampion', sizes: [40, 35] },
+        { src: 'https://photoku.io/images/2026/02/19/ICON-1.png', alt: 'Kipas', sizes: [50, 45] }
+    ];
+    
+    // Buat 14 elemen snowflake (7 gambar x 2 ukuran)
+    function createSnowflakes() {
+        for (let i = 0; i < images.length * 2; i++) {
+            const imgIndex = i % images.length;
+            const sizeIndex = Math.floor(i / images.length);
+            const image = images[imgIndex];
+            
+            const snowflake = document.createElement('div');
+            snowflake.className = 'imlek-snowflake';
+            
+            const img = document.createElement('img');
+            img.src = image.src;
+            img.alt = image.alt;
+            img.height = image.sizes[sizeIndex];
+            img.width = image.sizes[sizeIndex];
+            
+            snowflake.appendChild(img);
+            document.body.appendChild(snowflake);
+            
+            // Set posisi dan animasi yang unik untuk setiap elemen
+            const left = (i * 7) % 95; // Distribusi horizontal
+            const durationFall = 10 + Math.random() * 10; // 10-20 detik
+            const durationShake = 2 + Math.random() * 3; // 2-5 detik
+            const delay = Math.random() * 10; // Delay 0-10 detik
+            
+            snowflake.style.left = left + '%';
+            snowflake.style.animationDuration = `${durationFall}s, ${durationShake}s`;
+            snowflake.style.animationDelay = `${delay}s, ${Math.random() * 3}s`;
+            
+            // Efek klik
+            snowflake.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.style.animationPlayState = 'paused';
+                this.style.filter = 'drop-shadow(0 0 15px gold) brightness(1.5)';
+                this.style.transform = 'scale(1.5)';
+                
+                setTimeout(() => {
+                    this.style.animationPlayState = 'running';
+                    this.style.filter = 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))';
+                    this.style.transform = 'scale(1)';
+                }, 800);
+            });
+        }
+    }
+    
+    // Jalankan saat halaman selesai load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', createSnowflakes);
+    } else {
+        createSnowflakes();
+    }
+})();
+</script>
     
     <style>
         * {
