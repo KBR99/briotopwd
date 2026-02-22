@@ -30,6 +30,10 @@
             --transition: all 0.3s ease;
             --warning-orange: #FF9800;
             --prediction-gold: #FFD700;
+            --telegram-blue: #0088cc;
+            --win-gold: #FFD700;
+            --win-silver: #C0C0C0;
+            --win-bronze: #CD7F32;
         }
 
         body {
@@ -37,6 +41,10 @@
             color: var(--text-white);
             min-height: 100vh;
             line-height: 1.6;
+        }
+
+        body.modal-open {
+            overflow: hidden;
         }
 
         /* Animations */
@@ -77,6 +85,35 @@
             }
         }
 
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         /* Container */
         .container {
             max-width: 1200px;
@@ -88,7 +125,7 @@
         .header {
             background: rgba(26, 63, 44, 0.95);
             backdrop-filter: blur(10px);
-            padding: 15px 0;
+            padding: 10px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -98,31 +135,82 @@
 
         .header-content {
             display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .header-top {
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
+            width: 100%;
         }
 
         .logo img {
-            height: 50px;
+            height: 40px;
             width: auto;
             animation: pulse 3s infinite;
         }
 
+        .auth-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-login, .btn-register {
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 2px solid var(--primary-light);
+            color: var(--text-white);
+        }
+
+        .btn-login:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-register {
+            background: linear-gradient(45deg, var(--primary-light), var(--accent-green));
+            color: var(--primary-dark);
+            border: 2px solid transparent;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
         .nav-menu {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            padding: 5px 0;
         }
 
         .nav-menu a {
             color: var(--text-white);
             text-decoration: none;
-            padding: 8px 16px;
+            padding: 5px 12px;
             border-radius: 50px;
             transition: var(--transition);
             font-weight: 500;
+            font-size: 14px;
+            background: rgba(76, 175, 80, 0.15);
+            white-space: nowrap;
         }
 
         .nav-menu a:hover {
@@ -130,53 +218,54 @@
             transform: translateY(-2px);
         }
 
-        /* Header Mobile Optimasi - PERBAIKAN UNTUK MOBILE */
-        @media (max-width: 768px) {
-            .header {
-                padding: 10px 0;
-            }
-            
+        /* Tablet and Desktop */
+        @media (min-width: 769px) {
             .header-content {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                gap: 8px;
-                flex-wrap: nowrap; /* Mencegah wrap */
             }
             
-            .logo img {
-                height: 35px; /* Lebih kecil di mobile */
+            .header-top {
                 width: auto;
             }
             
             .nav-menu {
-                display: flex;
-                gap: 5px; /* Gap lebih kecil */
-                flex-wrap: nowrap; /* Mencegah wrap */
+                width: auto;
                 justify-content: flex-end;
             }
             
-            .nav-menu a {
-                padding: 6px 12px; /* Padding lebih kecil */
-                font-size: 13px; /* Font lebih kecil */
-                white-space: nowrap; /* Mencegah text wrap */
-                background: rgba(76, 175, 80, 0.15); /* Background transparan */
-                border-radius: 20px;
+            .logo img {
+                height: 50px;
             }
             
-            .nav-menu a:hover {
-                background: var(--primary-light);
+            .btn-login, .btn-register {
+                padding: 8px 20px;
+                font-size: 14px;
             }
         }
 
-        /* Untuk layar sangat kecil (di bawah 380px) */
-        @media (max-width: 380px) {
+        /* Untuk layar sangat kecil */
+        @media (max-width: 360px) {
             .logo img {
-                height: 30px;
+                height: 35px;
+            }
+            
+            .btn-login, .btn-register {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+            
+            .btn-login i, .btn-register i {
+                font-size: 10px;
+            }
+            
+            .nav-menu {
+                gap: 8px;
             }
             
             .nav-menu a {
-                padding: 5px 8px;
+                padding: 4px 8px;
                 font-size: 12px;
             }
         }
@@ -261,17 +350,6 @@
         .btn-secondary:hover {
             background: var(--primary-light);
             transform: translateY(-3px);
-        }
-
-        .btn-warning {
-            background: linear-gradient(45deg, var(--warning-orange), #FFB74D);
-            color: var(--primary-dark);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-warning:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
         }
 
         .hero-slider {
@@ -386,7 +464,7 @@
             transform: translateY(-2px);
         }
 
-        /* Prediction Banner NEW */
+        /* Prediction Banner */
         .prediction-banner {
             background: linear-gradient(145deg, #2a4a2a, #1f3a1f);
             border: 2px solid var(--prediction-gold);
@@ -607,6 +685,299 @@
             text-align: center;
         }
 
+        /* Bukti Kemenangan Section */
+        .winners-section {
+            padding: 40px 0;
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .winners-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--win-gold), transparent);
+        }
+
+        .winners-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .winners-header i {
+            font-size: 40px;
+            color: var(--win-gold);
+            animation: pulse 2s infinite;
+        }
+
+        .winners-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .winners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .winner-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--primary-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--win-gold);
+        }
+
+        .winner-card::after {
+            content: '🏆';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            opacity: 0.5;
+            transform: rotate(15deg);
+            z-index: 2;
+        }
+
+        .winner-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 2px solid var(--primary-light);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .winner-image::before {
+            content: '🔍 Klik untuk perbesar';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .winner-card:hover .winner-image::before {
+            transform: translateY(0);
+        }
+
+        .winner-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .winner-card:hover .winner-image img {
+            transform: scale(1.05);
+        }
+
+        .winner-info {
+            padding: 20px;
+        }
+
+        .winner-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(45deg, var(--primary-light), var(--accent-green));
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary-dark);
+        }
+
+        .winner-user {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent-green);
+        }
+
+        .winner-user i {
+            color: var(--win-gold);
+            margin-right: 5px;
+        }
+
+        .winner-game {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .winner-game i {
+            color: var(--primary-light);
+            margin-right: 5px;
+        }
+
+        .winner-amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--win-gold);
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .winner-amount i {
+            margin-right: 5px;
+        }
+
+        .winner-date {
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .winner-date i {
+            color: var(--primary-light);
+        }
+
+        /* Desktop Winners Slider */
+        @media (min-width: 769px) {
+            .winners-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 20px;
+                padding: 10px 5px 20px;
+                scrollbar-width: thin;
+                scrollbar-color: var(--primary-light) rgba(255,255,255,0.1);
+            }
+
+            .winners-grid::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .winners-grid::-webkit-scrollbar-track {
+                background: rgba(255,255,255,0.1);
+                border-radius: 10px;
+            }
+
+            .winners-grid::-webkit-scrollbar-thumb {
+                background: var(--primary-light);
+                border-radius: 10px;
+            }
+
+            .winners-grid::-webkit-scrollbar-thumb:hover {
+                background: var(--accent-green);
+            }
+
+            .winner-card {
+                min-width: 320px;
+                scroll-snap-align: start;
+            }
+        }
+
+        /* Modal Zoom Gambar - FITUR BARU */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .image-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: var(--text-white);
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border: 2px solid var(--primary-light);
+        }
+
+        .modal-close:hover {
+            color: var(--primary-light);
+            transform: rotate(90deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: var(--text-white);
+            font-size: 16px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            margin: 0 auto;
+            width: fit-content;
+            border-radius: 50px;
+            padding: 10px 30px;
+            border: 1px solid var(--primary-light);
+        }
+
+        .modal-caption i {
+            color: var(--win-gold);
+            margin: 0 5px;
+        }
+
         /* Contact Section */
         .contact-section {
             padding: 40px 0;
@@ -641,12 +1012,19 @@
 
         .contact-card i {
             font-size: 40px;
-            color: #25D366; 
             margin-bottom: 10px;
         }
 
+        .contact-card.whatsapp i {
+            color: #25D366;
+        }
+
+        .contact-card.telegram i {
+            color: var(--telegram-blue);
+        }
+
         .contact-card.livechat i {
-            color: #0088cc; 
+            color: #0088cc;
         }
 
         .contact-card h3 {
@@ -659,6 +1037,14 @@
             font-size: 14px;
             color: var(--text-light);
             margin: 0;
+        }
+
+        .contact-card .contact-number {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 8px;
+            color: var(--text-white);
+            word-break: break-word;
         }
 
         /* Footer */
@@ -752,6 +1138,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .winners-grid {
+                grid-template-columns: 1fr;
+            }
+
             .contact-grid {
                 grid-template-columns: 1fr;
             }
@@ -767,11 +1157,28 @@
             .prediction-wa {
                 justify-content: center;
             }
+
+            .modal-close {
+                top: 10px;
+                right: 10px;
+                font-size: 30px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .modal-caption {
+                font-size: 14px;
+                padding: 8px 20px;
+            }
         }
 
         /* Tablet Optimizations */
         @media (min-width: 769px) and (max-width: 1024px) {
             .promo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .winners-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -782,17 +1189,41 @@
     </style>
 </head>
 <body>
-    <!-- Header - SUDAH DIPERBAIKI UNTUK MOBILE -->
+    <!-- Modal Zoom Gambar - FITUR BARU -->
+    <div class="image-modal" id="imageModal">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <div class="modal-content" id="modalContent">
+            <img src="" alt="Bukti Kemenangan" id="modalImage">
+        </div>
+        <div class="modal-caption" id="modalCaption">
+            <i class="fas fa-trophy"></i> <span id="modalUser"></span> - <span id="modalGame"></span> <i class="fas fa-trophy"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <img src="https://demigod-assets.sgp1.cdn.digitaloceanspaces.com/gifs/Glitch-gif/topwd.webp" alt="TOPWD Logo" loading="lazy">
+                <div class="header-top">
+                    <div class="logo">
+                        <img src="https://demigod-assets.sgp1.cdn.digitaloceanspaces.com/gifs/Glitch-gif/topwd.webp" alt="TOPWD Logo" loading="lazy">
+                    </div>
+                    
+                    <div class="auth-buttons">
+                        <a href="https://topwd37278.com/?referralid=briowd#/index?category=hot" class="btn-login" target="_blank">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="https://topwd37278.com/?referralid=briowd#/register" class="btn-register" target="_blank">
+                            <i class="fas fa-user-plus"></i> Daftar
+                        </a>
+                    </div>
                 </div>
+                
                 <nav class="nav-menu">
                     <a href="#home">Home</a>
                     <a href="#promo">Promo</a>
                     <a href="#prediksi">Prediksi</a>
+                    <a href="#winners">Bukti JP</a>
                     <a href="#contact">Kontak</a>
                 </nav>
             </div>
@@ -810,10 +1241,10 @@
                     <h1>EVENT SCATTER MAHJONG 1 & 2</h1>
                     <p>BONUS SALDO TURNOVER BULANAN<br>SYARAT DAN KETENTUAN BERLAKU</p>
                     <div class="hero-buttons">
-                        <a href="https://topwd37278.com/?referralid=briowd" class="btn btn-primary" target="_blank">
+                        <a href="https://topwd37278.com/?referralid=briowd#/index?category=hot" class="btn btn-primary" target="_blank">
                             <i class="fas fa-rocket"></i> LOGIN TOPWD
                         </a>
-                        <a href="https://wa.me/6287879223077" class="btn btn-secondary" target="_blank">
+                        <a href="https://wa.me/+855967098370" class="btn btn-secondary" target="_blank">
                             <i class="fas fa-headset"></i> ADMIN
                         </a>
                     </div>
@@ -840,7 +1271,7 @@
         </div>
     </section>
 
-    <!-- PREDIKSI BANNER - NEW -->
+    <!-- PREDIKSI BANNER -->
     <div class="container" id="prediksi">
         <div class="prediction-banner">
             <div class="prediction-text">
@@ -850,17 +1281,14 @@
                 <p style="color: var(--prediction-gold); margin-top: 8px;"><i class="fas fa-star"></i> *GRATIS untuk member aktif*</p>
             </div>
             <div class="prediction-contacts">
-                <!-- Perwakilan 1 (WA) -->
-                <a href="https://wa.me/6281224943088?text=Halo%20saya%20minta%20prediksi%20togel%20dan%20slot%20JP" class="prediction-wa" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Perwakilan 1 (Togel/Slot)
+                <a href="https://wa.me/6281219731173?text=Halo%20saya%20minta%20prediksi%20togel%20dan%20slot%20JP" class="prediction-wa" target="_blank">
+                    <i class="fab fa-whatsapp"></i>(Togel/Slot)
                 </a>
-                <!-- Perwakilan 2 (WA) -->
                 <a href="https://wa.me/6282275261644?text=Halo%20saya%20minta%20info%20prediksi%20bola%20dan%20slot%20gacor" class="prediction-wa" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Perwakilan 2 (Bola/Slot)
+                    <i class="fab fa-whatsapp"></i>(Bola/Slot)
                 </a>
-                <!-- Perwakilan 3 (WA) dengan nama tambahan -->
                 <a href="https://wa.me/855966211030?text=Halo%20saya%20mau%20prediksi%20jp%20slot%20dan%20togel" class="prediction-wa" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Perwakilan 3 (Hotline JP)
+                    <i class="fab fa-whatsapp"></i>(Hotline JP)
                 </a>
             </div>
         </div>
@@ -924,7 +1352,7 @@
                                 <li>Berlaku untuk semua member TOPWD</li>
                                 <li>Max Rp 1.000.000 per hari</li>
                                 <li>Max claim 3x per ID per hari</li>
-                                <li>Wajib share di Grup Facebook</li>
+                                <li>Wajib share di Grup wa dan telegram</li>
                                 <li>Claim via livechat</li>
                             </ul>
                         </div>
@@ -1011,29 +1439,60 @@
         </div>
     </section>
 
-    <!-- Contact Section - ALL WA LANGSUNG KLIK -->
+    <!-- BUKTI KEMENANGAN SECTION -->
+    <section class="winners-section" id="winners">
+        <div class="container">
+            <div class="winners-header">
+                <i class="fas fa-trophy"></i>
+                <h2 class="section-title" style="margin-bottom: 0;">BUKTI KEMENANGAN MEMBER</h2>
+                <i class="fas fa-trophy"></i>
+            </div>
+            <p class="winners-subtitle">👉 Update kemenangan terbaru dari member TOPWD yang berhasil meraih JACKPOT! 👈</p>
+            
+            <div class="winners-grid" id="winnersGrid">
+                <!-- Data akan diisi oleh JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
     <section class="contact-section" id="contact">
         <div class="container">
             <h2 class="section-title">📞 HUBUNGI KAMI</h2>
             <div class="contact-grid">
-                <a href="https://wa.me/6281224943088" class="contact-card" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                    <h3>Customer Service 1</h3>
-                    <p>Klik untuk chat WhatsApp</p>
+                <!-- Telegram -->
+                <a href="https://t.me/topwd_88" class="contact-card telegram" target="_blank">
+                    <i class="fab fa-telegram-plane"></i>
+                    <h3>Telegram Resmi</h3>
+                    <p>Klik untuk chat Telegram</p>
+                    <div class="contact-number">@topwd_88</div>
                 </a>
                 
-                <a href="https://wa.me/6282275261644" class="contact-card" target="_blank">
+                <!-- WhatsApp 1 -->
+                <a href="https://wa.me/855967098370?text=Halo%20saya%20ingin%20bertanya%20tentang%20TOPWD" class="contact-card whatsapp" target="_blank">
                     <i class="fab fa-whatsapp"></i>
-                    <h3>Customer Service 2</h3>
+                    <h3>WhatsApp 1</h3>
                     <p>Klik untuk chat WhatsApp</p>
+                    <div class="contact-number">+855 96709 8370</div>
                 </a>
                 
-                <a href="https://wa.me/855966211030" class="contact-card" target="_blank">
+                <!-- WhatsApp 2 -->
+                <a href="https://wa.me/6281219731173?text=Halo%20saya%20ingin%20bertanya%20tentang%20TOPWD" class="contact-card whatsapp" target="_blank">
                     <i class="fab fa-whatsapp"></i>
-                    <h3>Hotline</h3>
+                    <h3>WhatsApp 2</h3>
                     <p>Klik untuk chat WhatsApp</p>
+                    <div class="contact-number">+62 812-1973-1173</div>
                 </a>
                 
+                <!-- WhatsApp 3 -->
+                <a href="https://wa.me/6281237330211?text=Halo%20saya%20ingin%20bertanya%20tentang%20TOPWD" class="contact-card whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp 3</h3>
+                    <p>Klik untuk chat WhatsApp</p>
+                    <div class="contact-number">+62 812-3733-0211</div>
+                </a>
+                
+                <!-- Livechat -->
                 <a href="https://direct.lc.chat/19129567" class="contact-card livechat" target="_blank">
                     <i class="fas fa-comment-dots"></i>
                     <h3>Livechat 24/7</h3>
@@ -1054,6 +1513,7 @@
                     <a href="#home">Home</a>
                     <a href="#promo">Promo</a>
                     <a href="#prediksi">Prediksi</a>
+                    <a href="#winners">Bukti JP</a>
                     <a href="#contact">Kontak</a>
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms</a>
@@ -1103,6 +1563,120 @@
                 });
             }
         }
+
+        // Data Bukti Kemenangan
+        const winnersData = [
+            {
+                id: 1,
+                userId: "furi***789",
+                game: "Lottery-SINGAPORE",
+                amount: "70,000,000",
+                image: "https://cdn.areabermain.club/assets/cdn/azdev/2026/02/21/20260221/b58d9aecec06220fdbea759060f9dd0e/asd123.png",
+                date: "15 February 2026",
+                category: "TOGEL"
+            },
+            {
+                id: 2,
+                userId: "tulak***77",
+                game: "PP-Gates of Olympus Super Scatter",
+                amount: "162,000,000",
+                image: "https://cdn.areabermain.club/assets/cdn/azdev/2026/02/21/20260221/665cd602c6991925dba097d76799146d/benar.png",
+                date: "15 February 2026",
+                category: "SLOT"
+            },
+            {
+                id: 3,
+                userId: "fa**wd",
+                game: "SA-Baccarat D03",
+                amount: "100,000,000",
+                image: "https://cdn.areabermain.club/assets/cdn/azdev/2026/02/21/20260221/5fe7760841bd8db221f5bd43ac9c1b62/blo1.jpg",
+                date: "02 February 2026",
+                category: "BACCARAT"
+            },
+            {
+                id: 4,
+                userId: "txxxxxxxxx9",
+                game: "PP-Gates of Olympus Super Scatter",
+                amount: "122,000,000",
+                image: "https://cdn.areabermain.club/assets/cdn/azdev/2026/02/21/20260221/8f5f3046113fddc3fa327a9ee0a40e30/sleekshot-2026-02-20-19-15-49.png",
+                date: "02 February 2026",
+                category: "SLOT"
+            },
+            {
+                id: 5,
+                userId: "fan***wd",
+                game: "SA-Baccarat D06",
+                amount: "125,000,000",
+                image: "https://cdn.areabermain.club/assets/cdn/azdev/2026/02/21/20260221/f432c6c9e8720ce0bb36259df1cb7d1d/blog12.png",
+                date: "29 Jan 2026",
+                category: "BACCARAT"
+            }
+        ];
+
+        // Render Winners
+        function renderWinners() {
+            const winnersGrid = document.getElementById('winnersGrid');
+            if (!winnersGrid) return;
+
+            winnersGrid.innerHTML = winnersData.map(winner => `
+                <div class="winner-card">
+                    <div class="winner-image" onclick="openImageModal('${winner.image}', '${winner.userId}', '${winner.game}', '${winner.amount}')">
+                        <img src="${winner.image}" alt="Bukti Kemenangan ${winner.userId}" loading="lazy">
+                    </div>
+                    <div class="winner-info">
+                        <span class="winner-category">${winner.category}</span>
+                        <div class="winner-user">
+                            <i class="fas fa-user"></i> ${winner.userId}
+                        </div>
+                        <div class="winner-game">
+                            <i class="fas fa-gamepad"></i> ${winner.game}
+                        </div>
+                        <div class="winner-amount">
+                            <i class="fas fa-coins"></i> Rp ${winner.amount}
+                        </div>
+                        <div class="winner-date">
+                            <i class="far fa-calendar-alt"></i> ${winner.date}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Modal Zoom Gambar - FITUR BARU
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalUser = document.getElementById('modalUser');
+        const modalGame = document.getElementById('modalGame');
+        const modalClose = document.getElementById('modalClose');
+
+        function openImageModal(imageSrc, userId, game, amount) {
+            modalImage.src = imageSrc;
+            modalUser.textContent = userId;
+            modalGame.textContent = game + ' - Rp ' + amount;
+            modal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeImageModal() {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Event listener untuk menutup modal
+        modalClose.addEventListener('click', closeImageModal);
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+
+        // Tutup modal dengan tombol ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeImageModal();
+            }
+        });
 
         // Promo Cards
         function initPromoCards() {
@@ -1170,6 +1744,7 @@
             if (heroSlider) {
                 new Slider(heroSlider);
             }
+            renderWinners();
             initPromoCards();
             initSearchAndFilter();
         };
